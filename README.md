@@ -13,6 +13,9 @@ pnpm dev
 # or
 bun dev
 ```
+### for Mailing services Mailtrap is used 
+![sample image](image.png)
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

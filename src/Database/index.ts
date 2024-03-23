@@ -1,10 +1,13 @@
 import mongoose from "mongoose";
-
+import { DB_NAME } from "@/helpers/constant";
 export async function connect(){
     try {
-        await mongoose.connect(process.env.MONGODB_URL!);
+        const DB_NAME = `AuthenticationDB`;
+        await mongoose.connect(`${process.env.MONGODB_URL}${DB_NAME}`);
 
         const connection = mongoose.connection;
+        console.log("Trying to connect with Database ");
+        
         connection.on("connected" , () => {
             console.log("Mongo DB is Connected");
         })
@@ -14,12 +17,10 @@ export async function connect(){
             
         })
 
-        process.exit(1);
-
+        
     } catch (error) {
         console.log("DB Connection Error");
         console.log(error);
-        
-        
+        process.exit(1); 
     }
 }

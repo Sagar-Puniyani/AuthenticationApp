@@ -1,20 +1,20 @@
-import { connect } from '@/Database';
+import { connect } from '@/Database/index';
 import User from '@/Models/user.models.js';
 import { NextRequest , NextResponse } from 'next/server';
 import bcryptjs from 'bcryptjs';
 import { EmailSend } from '@/helpers/mailer';
 
-connect()
-
+connect();
 interface RequestBody  {
     username : string,
     email : string,
     password : string
-
+    
 } 
 
 export async function POST( req : NextRequest ){
     try {
+        
         const requestBody : RequestBody = await  req.json();
         const {username , email , password }  = requestBody;
 
@@ -31,13 +31,15 @@ export async function POST( req : NextRequest ){
         
         const salt = await bcryptjs.genSalt(12);
         const passwordHash: string = await bcryptjs.hash(password, salt);
+        console.log("Password Hash : " , passwordHash);
+        
 
 
 
         const newUser = new  User({
             username,
             email,
-            passwordHash
+            password : passwordHash
         });
 
         const userDbInstance = await newUser.save();
@@ -49,6 +51,9 @@ export async function POST( req : NextRequest ){
             })
         }
 
+        console.log(userDbInstance);
+        
+
         //  Send Verification email 
         await EmailSend({
             email,
@@ -57,7 +62,7 @@ export async function POST( req : NextRequest ){
         })
 
 
-        NextResponse.json( {
+        return NextResponse.json( {
             status : 250 ,
             success : true ,
             message : "User Registered Successfully",
@@ -67,10 +72,10 @@ export async function POST( req : NextRequest ){
 
 
     } catch (error : any ) {
-        NextResponse
+        return NextResponse
             .json({
-                status : 500,
-                message : error.message,
+                status : 509,
+                message : "🧐 " + error.message,
             })
         
     }
