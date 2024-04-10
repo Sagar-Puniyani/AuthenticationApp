@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import { DB_NAME } from "@/helpers/constant";
 export async function connect(){
     try {
-        const DB_NAME = `AuthenticationDB`;
         await mongoose.connect(`${process.env.MONGODB_URL}${DB_NAME}`);
 
         const connection = mongoose.connection;

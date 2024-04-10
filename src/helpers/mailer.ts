@@ -32,7 +32,7 @@ export const EmailSend = async({email , emailtype , userId } : any ) =>{
         } as any  );
 
             const mailOptions =  {
-                from: "SagarPuniyani@gmail.com",
+                from: process.env.ADMIN_EMAIL,
                 to: email,
                 subject: emailtype === 'VERIFY' ? "Verify your emial Account" : "Rest your Password",
                 html: `<p>Click <a href="${process.env.DOMAIN}/verifyemail?token='${HashToken}'" >Here</a>
