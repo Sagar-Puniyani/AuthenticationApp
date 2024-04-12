@@ -24,7 +24,7 @@ export const EmailSend = async({email , emailtype , userId } : any ) =>{
 
         const  transport = nodemailer.createTransport({
             host : process.env.MAILER_HOST,
-            port: process.env.MAILER_PORT,
+            port: process.env.MAILER_PORT || 2525 ,
             auth: {
                 user: process.env.MAILER_USER,
                 pass: process.env.MAILER_PASS
