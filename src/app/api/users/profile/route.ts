@@ -9,8 +9,7 @@ export async function GET( req : NextRequest ){
         // extract payload from the Token 
         const userId = getDataFromToken(req);
 
-        const userInstance = await User.findById(userId);
-        userInstance.select("-password -verifyToken -forgotPasswordToken -forgotPasswwordTokenExpiry -verifyTokenExpiry");
+        const userInstance = await User.findById(userId).select("-password -verifyToken -forgotPasswordToken -forgotPasswwordTokenExpiry -verifyTokenExpiry");
         
         return NextResponse.json({
             status : 203,

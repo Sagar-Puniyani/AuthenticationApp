@@ -1,8 +1,8 @@
-import { connect } from '@/Database/index';
 import User from '@/Models/user.models.js';
 import { NextRequest , NextResponse } from 'next/server';
 import bcryptjs from 'bcryptjs';
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
+import { connect } from '@/Database/index';
 
 interface RequestBody  {
     email : string,
@@ -11,17 +11,9 @@ interface RequestBody  {
 } 
 connect();
 
-export async function GET( req : NextRequest ){
+export const  POST = async ( req : NextRequest )=> {
     try {
-        if (!req.body) {
-            return NextResponse.json({
-                status: 400,
-                message: "Request body is empty"
-            });
-        }
-        
-        console.log("try to log in User " );
-        const requestBody : RequestBody = await  req.json();
+        const requestBody : RequestBody  = await  req.json();
         console.log("try to log in User " , requestBody);
         const { email , password }  = requestBody;
 
