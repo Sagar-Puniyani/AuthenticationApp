@@ -2,25 +2,32 @@ import { connect } from '@/Database/index';
 import User from '@/Models/user.models.js';
 import { NextRequest , NextResponse } from 'next/server';
 import bcryptjs from 'bcryptjs';
-import { EmailSend } from '@/helpers/mailer';
+import jwt from 'jsonwebtoken'
 
-
-connect();
 interface RequestBody  {
-    username : string,
     email : string,
     password : string
     
 } 
+connect();
 
-export async function POST( req : NextRequest ){
+export async function GET( req : NextRequest ){
     try {
+        if (!req.body) {
+            return NextResponse.json({
+                status: 400,
+                message: "Request body is empty"
+            });
+        }
         
+        console.log("try to log in User " );
         const requestBody : RequestBody = await  req.json();
-        const {username , email , password }  = requestBody;
+        console.log("try to log in User " , requestBody);
+        const { email , password }  = requestBody;
+
 
         // Validation
-        console.log(requestBody);
+        console.log("Email : " , email );
 
         const userInstance = await User.findOne({email});
         if ( !userInstance){
@@ -40,14 +47,32 @@ export async function POST( req : NextRequest ){
         }
 
         // creation of token and send it to database 
-        
+        const tokenpayload = {
+            id  : userInstance._id,
+            username : userInstance.username,
+            email : userInstance.email
+        }
+
+        const token = jwt.sign(
+            tokenpayload, process.env.TOKEN_SECRET!, { expiresIn: "30d" });
+
+        const response = NextResponse.json({
+            message : "User Logged In Successfully",
+            status : 200,
+            success : true
+        })
+
+        response.cookies.set("token" , token ,{
+            httpOnly : true
+        })
+
+        return response;
 
     }catch (error : any ) {
         return NextResponse
             .json({
-                status : 509,
+                status : 510,
                 message : "🧐 " + error.message,
             })
-        
     }
 }

@@ -23,7 +23,7 @@ export  const  POST = async ( req : NextRequest) => {
         }
 
         const userDbInstance = await User.findOne( {verifyToken : token ,
-            verifyTokenExpiry : {$gt : Date.now()}});
+            verifyTokenExpiry : {$gt : Date.now()}}).select("-password");
         
         if ( !userDbInstance ){
             return NextResponse.json({
@@ -42,7 +42,7 @@ export  const  POST = async ( req : NextRequest) => {
 
         return NextResponse.json({
             status : 200,
-            message : "Email Verification Complete",
+            message : "Email Verification Successfully",
             success : true,
             user : userDbInstance
         })
