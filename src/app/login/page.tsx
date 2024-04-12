@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LogIn = () => {
+const LogInPage = () => {
 return (
     <h3>
         LogIn page 
@@ -8,4 +8,4 @@ return (
 )
 }
 
-export default LogIn
+export default LogInPage
