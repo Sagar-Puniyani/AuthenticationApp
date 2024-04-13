@@ -14,20 +14,22 @@ const VerifyPage = () => {
         try {
             await axios.post("/api/users/verifyemail" , { token });
             setVerified(true)
+            setError(false);
         } catch (error : any ) {
             setError(false)
             console.log("Error in Verification");
             console.log(error.response.data);
-            
-        }
     }
+}
 
     useEffect( ()=>{
+        setError(false);
         const urlToken = window.location.search.split("=")[1];
         setToken(urlToken || "");
     } , [])
-
+    
     useEffect(() => {
+        setError(false);
         if(token.length > 0) {
             VerificationEmail();
         }
@@ -60,5 +62,4 @@ return (
 
 )
 }
-
 export default VerifyPage
